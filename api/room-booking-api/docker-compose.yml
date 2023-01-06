@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  guest-api:
+    image: ${DOCKER_REGISTRY-}guestapi
+    build:
+      context: .
+      dockerfile: guest-api/Dockerfile
+    ports:
+        - "9005:80"
+        - "9006:443"
+  host-api:
+    image: ${DOCKER_REGISTRY-}hostapi
+    build:
+      context: .
+      dockerfile: host-api/Dockerfile
+    ports:
+        - "9011:80"
+        - "9012:443"
