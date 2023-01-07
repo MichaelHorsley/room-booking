@@ -9,6 +9,8 @@ services:
     ports:
         - "9005:80"
         - "9006:443"
+    depends_on:
+      - "logs"
   host-api:
     image: ${DOCKER_REGISTRY-}hostapi
     build:
@@ -17,3 +19,13 @@ services:
     ports:
         - "9011:80"
         - "9012:443"
+    depends_on:
+      - "logs"
+  logs:
+    image: datalust/seq
+    volumes:
+      - C:/logdata:/data
+    ports:
+        - "9021:80"
+    environment:
+      - ACCEPT_EULA=Y

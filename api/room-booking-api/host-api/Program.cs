@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace host_api
 {
     public class Program
@@ -13,6 +15,18 @@ namespace host_api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile("appsettings.json");
+            var configuration = configurationBuilder.Build();
+
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,7 +39,6 @@ namespace host_api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
