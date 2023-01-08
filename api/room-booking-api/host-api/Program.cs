@@ -15,6 +15,8 @@ namespace host_api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddHealthChecks();
+
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("appsettings.json");
             var configuration = configurationBuilder.Build();
@@ -23,6 +25,8 @@ namespace host_api
                 .ReadFrom.Configuration(configuration)
                 .Enrich.FromLogContext()
                 .CreateLogger();
+
+            logger.Information("Starting up host api");
 
             builder.Logging.ClearProviders();
             builder.Logging.AddSerilog(logger);
@@ -41,6 +45,8 @@ namespace host_api
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHealthChecks("/CheckHealth");
 
             app.Run();
         }
