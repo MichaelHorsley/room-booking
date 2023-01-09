@@ -20,4 +20,10 @@ public class RoomController : ControllerBase
 
         return new JsonResult(new {});
     }
+
+    [HttpPost(Name = "Register new room")]
+    public JsonResult RegisterNewRoom()
+    {
+        return new JsonResult(new { });
+    }
 }
