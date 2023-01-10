@@ -1,5 +1,7 @@
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using host_api.Mapping;
 using host_api.Validation;
 using Serilog;
 
@@ -24,6 +26,9 @@ namespace host_api
             // Fluent Validation
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterNewRoomRequestValidator>();
+
+            // Automapping
+            builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(RegisterNewRoomRequest_RegisterNewRoomCommand_Profile)));
 
             // Build configuration from appsettings
             var configurationBuilder = new ConfigurationBuilder();

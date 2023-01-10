@@ -32,16 +32,21 @@ namespace host_api_tests.Controllers
         [Test]
         public async Task RegisterNewRoom_GivenValidData_RaisesCommand()
         {
+            var roomId = Guid.NewGuid();
+            var hostId = Guid.NewGuid();
+
             var request = new RegisterNewRoomRequest
             {
-                RoomId = Guid.NewGuid(),
-                HostId = Guid.NewGuid()
+                RoomId = roomId,
+                HostId = hostId
             };
 
             var response = await SendApiRequest("/Room/RegisterNewRoom", request);
 
             response.EnsureSuccessStatusCode();
-            _mockCommandHandler.Verify(x => x.Dispatch(It.IsAny<RegisterNewRoomCommand>()), Times.Once);
+            _mockCommandHandler
+                .Verify(x => 
+                    x.Dispatch(It.Is<RegisterNewRoomCommand>(y => y.HostId.Equals(hostId) && y.RoomId.Equals(roomId))), Times.Once);
         }
 
         [Test]
