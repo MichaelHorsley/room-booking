@@ -38,18 +38,33 @@ namespace host_api_tests.Controllers
                 HostId = Guid.NewGuid()
             };
 
-            await SendApiRequest("/Room/RegisterNewRoom", request);
+            var response = await SendApiRequest("/Room/RegisterNewRoom", request);
 
+            response.EnsureSuccessStatusCode();
             _mockCommandHandler.Verify(x => x.Dispatch(It.IsAny<RegisterNewRoomCommand>()), Times.Once);
         }
 
-        private async Task SendApiRequest(string url, object messageBody)
+        [Test]
+        public async Task RegisterNewRoom_GivenInvalidData_ReturnsError()
+        {
+            var request = new RegisterNewRoomRequest
+            {
+                RoomId = Guid.Empty,
+                HostId = Guid.Empty
+            };
+
+            var response = await SendApiRequest("/Room/RegisterNewRoom", request);
+
+            Assert.IsFalse(response.IsSuccessStatusCode);
+
+            _mockCommandHandler.Verify(x => x.Dispatch(It.IsAny<RegisterNewRoomCommand>()), Times.Never);
+        }
+
+        private async Task<HttpResponseMessage> SendApiRequest(string url, object messageBody)
         {
             using var httpClient = _testApi.CreateClient();
 
-            var httpResponseMessage = await httpClient.PostAsync(url, JsonContent.Create(messageBody));
-
-            httpResponseMessage.EnsureSuccessStatusCode();
+            return await httpClient.PostAsync(url, JsonContent.Create(messageBody));
         }
     }
 }

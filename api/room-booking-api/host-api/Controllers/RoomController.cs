@@ -28,11 +28,6 @@ public class RoomController : ControllerBase
     [HttpPost("RegisterNewRoom", Name = "Register new room")]
     public IActionResult RegisterNewRoom(RegisterNewRoomRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return StatusCode(400, ModelState);
-        }
-
         _commandHandler.Dispatch(new RegisterNewRoomCommand());
 
         return new JsonResult(new { });
