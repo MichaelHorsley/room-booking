@@ -20,14 +20,6 @@ public class RoomController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet(Name = "GetAllRooms")]
-    public JsonResult GetAllRooms()
-    {
-        _logger.LogInformation("Testing");
-
-        return new JsonResult(new {});
-    }
-
     [HttpPost("RegisterNewRoom", Name = "Register new room")]
     public IActionResult RegisterNewRoom(RegisterNewRoomRequest request)
     {

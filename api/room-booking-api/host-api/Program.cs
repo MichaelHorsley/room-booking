@@ -20,7 +20,7 @@ namespace host_api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            //Health checks
+            // Health checks
             builder.Services.AddHealthChecks();
             
             // Fluent Validation

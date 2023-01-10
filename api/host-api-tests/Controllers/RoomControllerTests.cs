@@ -46,7 +46,11 @@ namespace host_api_tests.Controllers
             response.EnsureSuccessStatusCode();
             _mockCommandHandler
                 .Verify(x => 
-                    x.Dispatch(It.Is<RegisterNewRoomCommand>(y => y.HostId.Equals(hostId) && y.RoomId.Equals(roomId))), Times.Once);
+                    x.Dispatch(It.Is<RegisterNewRoomCommand>(y => 
+                        y.HostId.Equals(hostId) 
+                        && y.RoomId.Equals(roomId) 
+                        && !y.Id.Equals(Guid.Empty))), 
+                    Times.Once);
         }
 
         [Test]
