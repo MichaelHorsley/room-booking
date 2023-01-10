@@ -1,3 +1,4 @@
+using host_api.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace host_api.Controllers;
@@ -22,8 +23,13 @@ public class RoomController : ControllerBase
     }
 
     [HttpPost("RegisterNewRoom", Name = "Register new room")]
-    public JsonResult RegisterNewRoom()
+    public IActionResult RegisterNewRoom(RegisterNewRoomRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return StatusCode(400, ModelState);
+        }
+
         return new JsonResult(new { });
     }
 }

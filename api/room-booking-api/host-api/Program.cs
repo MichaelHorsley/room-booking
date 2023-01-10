@@ -1,3 +1,6 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using host_api.Validation;
 using Serilog;
 
 namespace host_api
@@ -9,18 +12,25 @@ namespace host_api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //Health checks
             builder.Services.AddHealthChecks();
+            
+            // Fluent Validation
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining<RegisterNewRoomRequestValidator>();
 
+            // Build configuration from appsettings
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("appsettings.json");
             var configuration = configurationBuilder.Build();
 
+            // Build logging
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .Enrich.FromLogContext()
@@ -31,6 +41,7 @@ namespace host_api
             builder.Logging.ClearProviders();
             builder.Logging.AddSerilog(logger);
 
+            // Build application
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
