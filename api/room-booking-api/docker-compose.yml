@@ -11,6 +11,7 @@ services:
         - "9006:443"
     depends_on:
       - "logs"
+      - "rabbitmq"
   host-api:
     image: ${DOCKER_REGISTRY-}hostapi
     build:
@@ -21,11 +22,20 @@ services:
         - "9012:443"
     depends_on:
       - "logs"
+      - "rabbitmq"
   logs:
     image: datalust/seq
     volumes:
-      - C:/logdata:/data
+      - D:/DockerVolumes/Seq:/data
     ports:
         - "9021:80"
     environment:
       - ACCEPT_EULA=Y
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - D:/DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
+        - D:/DockerVolumes/RabbitMq/log/:/var/log/rabbitmq
