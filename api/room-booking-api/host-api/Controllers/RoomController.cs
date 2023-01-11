@@ -23,7 +23,7 @@ public class RoomController : ControllerBase
     [HttpPost("RegisterNewRoom", Name = "Register new room")]
     public IActionResult RegisterNewRoom(RegisterNewRoomRequest request)
     {
-        var command = _mapper.Map< RegisterNewRoomCommand>(request);
+        var command = _mapper.Map<RegisterNewRoomCommand>(request);
 
         _commandHandler.Dispatch(command);
 

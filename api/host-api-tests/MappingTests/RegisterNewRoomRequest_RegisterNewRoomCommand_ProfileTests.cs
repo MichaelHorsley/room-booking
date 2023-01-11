@@ -43,5 +43,18 @@ namespace host_api_tests.MappingTests
 
             Assert.AreEqual(registerNewRoomRequest.HostId, registerNewRoomCommand.HostId);
         }
+
+        [Test]
+        public void Map_CorrelationId()
+        {
+            var registerNewRoomRequest = new RegisterNewRoomRequest
+            {
+                CorrelationId = Guid.NewGuid()
+            };
+
+            var registerNewRoomCommand = _sut.Map<RegisterNewRoomCommand>(registerNewRoomRequest);
+
+            Assert.AreEqual(registerNewRoomRequest.CorrelationId, registerNewRoomCommand.CorrelationId);
+        }
     }
 }
