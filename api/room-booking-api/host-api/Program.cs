@@ -48,7 +48,7 @@ namespace host_api
             builder.Logging.AddSerilog(logger);
 
             // Add Services
-            builder.Services.AddSingleton<ICommandHandler>(new RabbitMqCommandHandler(configuration.GetConnectionString("RabbitMq")));
+            builder.Services.AddSingleton<ICommandHandler>(_ => new RabbitMqCommandHandler(configuration.GetConnectionString("RabbitMq")));
 
             // Build application
             var app = builder.Build();
