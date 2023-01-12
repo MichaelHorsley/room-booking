@@ -23,6 +23,14 @@ services:
     depends_on:
       - "logs"
       - "rabbitmq"
+  host-domain:
+    image: ${DOCKER_REGISTRY-}hostdomain
+    build:
+      context: .
+      dockerfile: host-domain/Dockerfile
+    depends_on:
+      - "logs"
+      - "rabbitmq"
   logs:
     image: datalust/seq
     volumes:

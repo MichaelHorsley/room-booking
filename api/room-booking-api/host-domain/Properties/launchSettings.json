@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "host-domain": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
