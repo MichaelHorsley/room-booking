@@ -26,7 +26,7 @@ namespace host_domain
                 .CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<MessageConsumerService>();
+                    services.AddHostedService<RabbitMessageConsumerService>();
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();
