@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace host_domain;
+namespace host_domain.HostedServices;
 
 public class RabbitMessageConsumerService : IHostedService
 {
@@ -30,7 +30,7 @@ public class RabbitMessageConsumerService : IHostedService
             {
                 _connection = factory.CreateConnection();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogWarning(e, "Having issues connecting to rabbitmq");
 
