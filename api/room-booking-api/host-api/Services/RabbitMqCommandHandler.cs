@@ -25,7 +25,7 @@ public class RabbitMqCommandHandler : ICommandHandler
         {
             using (var channel = _connection.CreateModel())
             {
-                channel.ExchangeDeclare(exchange: "command", type: "direct");
+                channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
             }
         }
         catch(Exception e)

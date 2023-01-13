@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -42,7 +43,7 @@ public class RabbitMessageConsumerService : IHostedService
 
         using (var channel = _connection.CreateModel())
         {
-            channel.ExchangeDeclare(exchange: "command", type: "direct");
+            channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
 
             channel.QueueDeclare(queue: "command-domain-consumer",
                 durable: true,
