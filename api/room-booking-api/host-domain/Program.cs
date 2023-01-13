@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace host_domain
@@ -26,7 +27,7 @@ namespace host_domain
                 .CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<RabbitMessageConsumerService>();
+                    services.AddHostedService((serviceProvider) => new RabbitMessageConsumerService(serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), configuration.GetConnectionString("RabbitMq")));
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();

@@ -18,3 +18,10 @@ services:
     ports:
         - "80"
         - "443"
+  logs:
+    volumes:
+      - C:/DockerVolumes/Seq:/data
+  rabbitmq:
+    volumes:
+        - C:/DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
+        - C:/DockerVolumes/RabbitMq/log/:/var/log/rabbitmq

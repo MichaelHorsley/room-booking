@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -10,20 +9,38 @@ namespace host_domain;
 public class RabbitMessageConsumerService : IHostedService
 {
     private readonly ILogger<RabbitMessageConsumerService> _logger;
+    private readonly string _connectionString;
+    private IConnection _connection;
 
-    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger)
+    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, string connectionString)
     {
         _logger = logger;
+        _connectionString = connectionString;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Message Consumer Service is starting up");
 
-        var factory = new ConnectionFactory { HostName = "localhost" };
-        
-        using (var connection = factory.CreateConnection())
-        using (var channel = connection.CreateModel())
+        var factory = new ConnectionFactory { HostName = _connectionString };
+
+        while (_connection == null)
+        {
+            try
+            {
+                _connection = factory.CreateConnection();
+            }
+            catch(Exception e)
+            {
+                _logger.LogWarning(e, "Having issues connecting to rabbitmq");
+
+                await Task.Delay(1000, cancellationToken);
+            }
+        }
+
+        _connection = factory.CreateConnection();
+
+        using (var channel = _connection.CreateModel())
         {
             channel.ExchangeDeclare(exchange: "command", type: "direct");
 
@@ -50,14 +67,20 @@ public class RabbitMessageConsumerService : IHostedService
             channel.BasicConsume(queue: "command-domain-consumer",
                 autoAck: true,
                 consumer: consumer);
-        }
 
-        return Task.CompletedTask;
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(5000, cancellationToken);
+            }
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Message Consumer Service is shutting down");
+
+        _connection?.Close();
+        _connection?.Dispose();
 
         return Task.CompletedTask;
     }

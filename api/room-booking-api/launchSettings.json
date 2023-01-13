@@ -5,7 +5,10 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "guest-api": "StartDebugging",
-        "host-api": "StartDebugging"
+        "host-api": "StartDebugging",
+        "host-domain": "StartDebugging",
+        "logs": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging"
       }
     }
   }

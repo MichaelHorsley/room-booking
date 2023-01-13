@@ -45,5 +45,5 @@ services:
         - 5672:5672
         - 15672:15672
     volumes:
-        - D:/DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
-        - D:/DockerVolumes/RabbitMq/log/:/var/log/rabbitmq
+        - /DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
+        - /DockerVolumes/RabbitMq/log/:/var/log/rabbitmq
