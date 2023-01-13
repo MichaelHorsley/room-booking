@@ -1,4 +1,4 @@
-namespace host_api.Controllers;
+namespace commands;
 
 public class RegisterNewRoomCommand : Command
 {

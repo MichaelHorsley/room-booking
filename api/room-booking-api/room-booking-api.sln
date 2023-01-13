@@ -11,7 +11,11 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "host-api-tests", "..\host-api-tests\host-api-tests.csproj", "{F8BB2474-D1DC-40FC-8B3A-3A1354A887FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host-domain", "host-domain\host-domain.csproj", "{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "host-domain", "host-domain\host-domain.csproj", "{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7925963F-0F2E-4516-8C53-0ACF7273CB91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commands", "commands\commands.csproj", "{AF430303-C727-41E7-AAE9-DC6BA14D6C95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,16 @@ Global
 		{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF430303-C727-41E7-AAE9-DC6BA14D6C95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF430303-C727-41E7-AAE9-DC6BA14D6C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF430303-C727-41E7-AAE9-DC6BA14D6C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF430303-C727-41E7-AAE9-DC6BA14D6C95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF430303-C727-41E7-AAE9-DC6BA14D6C95} = {7925963F-0F2E-4516-8C53-0ACF7273CB91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA23773E-6FFD-4DA3-AAF8-565A3A118438}

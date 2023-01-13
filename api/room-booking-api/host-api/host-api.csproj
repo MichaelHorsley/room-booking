@@ -29,4 +29,8 @@
     <Folder Include="Requests\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\commands\commands.csproj" />
+  </ItemGroup>
+
 </Project>
