@@ -34,14 +34,16 @@ public class RabbitMqCommandHandler : ICommandHandler
         }
     }
 
-    public void Dispatch(Command command)
+    public void Dispatch<T>(T command) where T : Command
     {
         var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(command));
 
         using (var channel = _connection.CreateModel())
         {
+            var commandTypeName = typeof(T).Name;
+
             channel.BasicPublish(exchange: "command",
-                routingKey: nameof(command),
+                routingKey: commandTypeName,
                 basicProperties: null,
                 body: body);
         }
