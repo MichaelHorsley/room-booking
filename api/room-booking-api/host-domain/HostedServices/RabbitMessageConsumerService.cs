@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
+using commands;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -44,15 +46,37 @@ public class RabbitMessageConsumerService : IHostedService
         {
             channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
 
-            channel.QueueDeclare(queue: "command-domain-consumer",
+            CreateQueuesForAllCommands(channel);
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(5000, cancellationToken);
+            }
+        }
+    }
+
+    private void CreateQueuesForAllCommands(IModel channel)
+    {
+        var types = Assembly.GetAssembly(typeof(RegisterNewRoomCommand))
+            .GetTypes()
+            .Where(x => x.IsSubclassOf(typeof(Command)))
+            .ToList();
+
+        foreach (var commandType in types)
+        {
+            var commandTypeName = commandType.Name.ToLower();
+
+            var queue = $"domain-consumer-{commandTypeName}";
+
+            channel.QueueDeclare(queue: queue,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
                 arguments: null);
 
-            channel.QueueBind(queue: "command-domain-consumer",
+            channel.QueueBind(queue: queue,
                 exchange: "command",
-                routingKey: "RegisterNewRoomCommand");
+                routingKey: commandTypeName);
 
             var consumer = new EventingBasicConsumer(channel);
 
@@ -64,14 +88,9 @@ public class RabbitMessageConsumerService : IHostedService
                 _logger.LogInformation(message);
             };
 
-            channel.BasicConsume(queue: "command-domain-consumer",
+            channel.BasicConsume(queue: queue,
                 autoAck: true,
                 consumer: consumer);
-
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(5000, cancellationToken);
-            }
         }
     }
 

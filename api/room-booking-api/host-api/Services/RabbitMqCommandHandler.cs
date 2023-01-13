@@ -40,7 +40,7 @@ public class RabbitMqCommandHandler : ICommandHandler
 
         using (var channel = _connection.CreateModel())
         {
-            var commandTypeName = typeof(T).Name;
+            var commandTypeName = typeof(T).Name.ToLower();
 
             channel.BasicPublish(exchange: "command",
                 routingKey: commandTypeName,
