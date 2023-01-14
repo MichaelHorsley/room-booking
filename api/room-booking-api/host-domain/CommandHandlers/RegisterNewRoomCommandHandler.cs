@@ -14,7 +14,7 @@ public class RegisterNewRoomCommandHandler : IHandleCommand<RegisterNewRoomComma
 
     public Task Handle(RegisterNewRoomCommand command)
     {
-        _logger.Information("Handling command {0}", command.CorrelationId);
+        _logger.Information("Handling command with CorrelationId:{correlationId}", command.CorrelationId);
 
         return Task.CompletedTask;
     }
