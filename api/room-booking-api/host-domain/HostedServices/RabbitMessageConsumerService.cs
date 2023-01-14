@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 using System.Text;
 using commands;
+using host_domain.CommandHandlers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -12,12 +15,14 @@ public class RabbitMessageConsumerService : IHostedService
 {
     private readonly ILogger<RabbitMessageConsumerService> _logger;
     private readonly string _connectionString;
+    private readonly IServiceProvider _serviceProvider;
     private IConnection _connection;
 
-    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, string connectionString)
+    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, string connectionString, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _connectionString = connectionString;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -62,8 +67,17 @@ public class RabbitMessageConsumerService : IHostedService
             .Where(x => x.IsSubclassOf(typeof(Command)))
             .ToList();
 
+        var commandHandlerTypes = Assembly.GetAssembly(typeof(RegisterNewRoomCommandHandler))
+            .GetTypes()
+            .Where(x => x.GetInterfaces().Any(y => y.Name.Contains("IHandleCommand"))).ToList();
+
         foreach (var commandType in types)
         {
+            var commandHandlerForCommandType = commandHandlerTypes.FirstOrDefault(x =>
+                x.GetInterfaces().First().GenericTypeArguments.First() == commandType);
+
+            var service = _serviceProvider.GetService(commandHandlerForCommandType);
+
             var commandTypeName = commandType.Name.ToLower();
 
             var queue = $"domain-consumer-{commandTypeName}";
@@ -85,7 +99,9 @@ public class RabbitMessageConsumerService : IHostedService
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
-                _logger.LogInformation(message);
+                var method = service.GetType().GetMethod("Handle");
+                
+                method.Invoke(service, new object[] { JsonConvert.DeserializeObject(message, service.GetType().GetInterfaces().First().GenericTypeArguments.First()) });
             };
 
             channel.BasicConsume(queue: queue,

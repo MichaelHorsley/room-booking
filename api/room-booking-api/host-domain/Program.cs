@@ -1,4 +1,6 @@
-﻿using host_domain.HostedServices;
+﻿using System.Reflection;
+using host_domain.CommandHandlers;
+using host_domain.HostedServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,10 +33,25 @@ namespace host_domain
                 .CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService((serviceProvider) => new RabbitMessageConsumerService(serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), configuration.GetConnectionString("RabbitMq")));
+                    services.AddHostedService(serviceProvider => 
+                        new RabbitMessageConsumerService(serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), configuration.GetConnectionString("RabbitMq"), serviceProvider));
+
+                    RegisterCommandHandlers(services);
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();
+        }
+
+        private static void RegisterCommandHandlers(IServiceCollection services)
+        {
+            var types = Assembly.GetAssembly(typeof(RegisterNewRoomCommandHandler)).GetTypes();
+
+            var commandHandlerTypes = types.Where(x => x.GetInterfaces().Any(y => y.Name.Contains("IHandleCommand"))).ToList();
+
+            foreach (var handlerType in commandHandlerTypes)
+            {
+                services.AddSingleton(handlerType);
+            }
         }
     }
 }
