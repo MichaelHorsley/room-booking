@@ -2,7 +2,6 @@
 using System.Text;
 using commands;
 using host_domain.CommandHandlers;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using commands;
-using host_api.Controllers;
 using host_api.Mapping;
 using host_api.Requests;
 using NUnit.Framework;
@@ -24,7 +23,7 @@ namespace host_api_tests.MappingTests
         {
             var registerNewRoomRequest = new RegisterNewRoomRequest
             {
-                RoomId = Guid.NewGuid()
+                RoomId = "room-id-1"
             };
 
             var registerNewRoomCommand = _sut.Map<RegisterNewRoomCommand>(registerNewRoomRequest);

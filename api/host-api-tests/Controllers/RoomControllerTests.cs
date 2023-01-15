@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using commands;
-using host_api.Controllers;
 using host_api.Requests;
 using host_api.Services;
 using Moq;
@@ -33,7 +32,7 @@ namespace host_api_tests.Controllers
         [Test]
         public async Task RegisterNewRoom_GivenValidData_RaisesCommand()
         {
-            var roomId = Guid.NewGuid();
+            var roomId = Guid.NewGuid().ToString();
             var hostId = Guid.NewGuid();
 
             var request = new RegisterNewRoomRequest
@@ -59,7 +58,7 @@ namespace host_api_tests.Controllers
         {
             var request = new RegisterNewRoomRequest
             {
-                RoomId = Guid.Empty,
+                RoomId = "",
                 HostId = Guid.Empty
             };
 

@@ -18,7 +18,7 @@ namespace host_api_tests.Validation
             _request = new RegisterNewRoomRequest
             {
                 HostId = Guid.NewGuid(),
-                RoomId = Guid.NewGuid()
+                RoomId = "roomid-1"
             };
         }
 
@@ -36,7 +36,7 @@ namespace host_api_tests.Validation
         [Test]
         public void Validate_GivenRequestWithDefaultRoomId_ReturnsFalse()
         {
-            _request.RoomId = Guid.Empty;
+            _request.RoomId = "";
 
             var validationResult = _sut.Validate(_request);
 
