@@ -12,6 +12,7 @@ services:
     depends_on:
       - "logs"
       - "rabbitmq"
+      - "mongodb"
   host-api:
     image: ${DOCKER_REGISTRY-}hostapi
     build:
@@ -23,6 +24,7 @@ services:
     depends_on:
       - "logs"
       - "rabbitmq"
+      - "mongodb"
   host-domain:
     image: ${DOCKER_REGISTRY-}hostdomain
     build:
@@ -31,6 +33,7 @@ services:
     depends_on:
       - "logs"
       - "rabbitmq"
+      - "mongodb"
   logs:
     image: datalust/seq
     volumes:
@@ -47,3 +50,9 @@ services:
     volumes:
         - /DockerVolumes/RabbitMq/data/:/var/lib/rabbitmq/
         - /DockerVolumes/RabbitMq/log/:/var/log/rabbitmq
+  mongodb:
+    image: mongo
+    ports:
+        - 27017:27017
+    volumes:
+        - /DockerVolumes/MongoDb/data/:/data/db

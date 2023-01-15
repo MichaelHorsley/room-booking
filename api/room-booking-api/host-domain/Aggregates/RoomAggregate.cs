@@ -13,6 +13,9 @@ public class RoomAggregate : Aggregate
     
     public void RegisterNewRoom(Guid hostId, string roomId)
     {
-
+        if (!_alreadyCreated)
+        {
+            Raise(new RoomRegistered());
+        }
     }
 }
