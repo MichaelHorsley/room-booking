@@ -33,10 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\commands\commands.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
+    <ProjectReference Include="..\Events\Events.csproj" />
   </ItemGroup>
 
 </Project>
