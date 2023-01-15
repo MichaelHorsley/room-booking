@@ -1,5 +1,11 @@
 ﻿namespace host_domain.Aggregates;
 
-public abstract class Aggregate
+public class Aggregate
 {
+    public string Id { get; }
+
+    public Aggregate(string id)
+    {
+        Id = id;
+    }
 }

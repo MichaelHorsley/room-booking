@@ -4,6 +4,6 @@ public class AggregateService : IAggregateService
 {
     public T Get<T>(string id)
     {
-        return default(T);
+        return (T)Activator.CreateInstance(typeof(T), id);
     }
 }

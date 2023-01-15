@@ -19,7 +19,7 @@ namespace host_domain_tests.CommandHandlerTests
         {
             _mockAggregateService = new Mock<IAggregateService>();
 
-            _mockAggregateService.Setup(x => x.Get<RoomAggregate>(It.IsAny<string>())).Returns(new RoomAggregate());
+            _mockAggregateService.Setup(x => x.Get<RoomAggregate>(It.IsAny<string>())).Returns(new RoomAggregate(""));
 
             _sut = new RegisterNewRoomCommandHandler(new Mock<ILogger>().Object, _mockAggregateService.Object);
         }
