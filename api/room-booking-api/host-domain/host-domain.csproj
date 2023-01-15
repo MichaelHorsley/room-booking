@@ -35,4 +35,8 @@
     <ProjectReference Include="..\commands\commands.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
