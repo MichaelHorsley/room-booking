@@ -1,5 +1,7 @@
 ﻿using host_domain.Aggregates;
+using host_domain.Repositories;
 using host_domain.Services;
+using Moq;
 using NUnit.Framework;
 
 namespace host_domain_tests.Services
@@ -8,11 +10,13 @@ namespace host_domain_tests.Services
     public class AggregateServiceTests
     {
         private AggregateService _sut;
+        private Mock<IEventRepository> _mockEventRepository;
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new AggregateService();
+            _mockEventRepository = new Mock<IEventRepository>();
+            _sut = new AggregateService(_mockEventRepository.Object);
         }
 
         [Test]

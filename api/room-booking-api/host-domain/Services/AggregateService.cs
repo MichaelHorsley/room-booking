@@ -1,9 +1,21 @@
-﻿namespace host_domain.Services;
+﻿using host_domain.Aggregates;
+using host_domain.Repositories;
+
+namespace host_domain.Services;
 
 public class AggregateService : IAggregateService
 {
-    public T Get<T>(string id)
+    private readonly IEventRepository _eventRepository;
+
+    public AggregateService(IEventRepository eventRepository)
     {
-        return (T)Activator.CreateInstance(typeof(T), id);
+        _eventRepository = eventRepository;
+    }
+
+    public T Get<T>(string id) where T : Aggregate
+    {
+        var instance = (T)Activator.CreateInstance(typeof(T), id, _eventRepository);
+
+        return instance;
     }
 }
