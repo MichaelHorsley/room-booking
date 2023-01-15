@@ -1,6 +1,7 @@
 ﻿using commands;
 using host_domain.Aggregates;
 using host_domain.CommandHandlers;
+using host_domain.Repositories;
 using host_domain.Services;
 using Moq;
 using NUnit.Framework;
@@ -13,13 +14,17 @@ namespace host_domain_tests.CommandHandlerTests
     {
         private RegisterNewRoomCommandHandler _sut;
         private Mock<IAggregateService> _mockAggregateService;
+        private Mock<IEventRepository> _mockEventRepository;
 
         [SetUp]
         public void SetUp()
         {
             _mockAggregateService = new Mock<IAggregateService>();
+            _mockEventRepository = new Mock<IEventRepository>();
 
-            _mockAggregateService.Setup(x => x.Get<RoomAggregate>(It.IsAny<string>())).Returns(new RoomAggregate(""));
+            _mockAggregateService
+                .Setup(x => x.Get<RoomAggregate>(It.IsAny<string>()))
+                .Returns(new RoomAggregate("", _mockEventRepository.Object));
 
             _sut = new RegisterNewRoomCommandHandler(new Mock<ILogger>().Object, _mockAggregateService.Object);
         }
