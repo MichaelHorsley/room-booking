@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{792596
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "commands", "commands\commands.csproj", "{AF430303-C727-41E7-AAE9-DC6BA14D6C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host-domain-tests", "host-domain-tests\host-domain-tests.csproj", "{60FB9B3B-C665-4CB8-88DD-C4CECDA66F7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "host-domain-tests", "host-domain-tests\host-domain-tests.csproj", "{60FB9B3B-C665-4CB8-88DD-C4CECDA66F7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events", "Events\Events.csproj", "{399072A9-D4A8-44DD-8A65-13E9A6B0E979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "events", "Events\events.csproj", "{399072A9-D4A8-44DD-8A65-13E9A6B0E979}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

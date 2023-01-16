@@ -1,4 +1,4 @@
-﻿using Events;
+﻿using events;
 using host_domain.Repositories;
 
 namespace host_domain.Aggregates;

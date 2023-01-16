@@ -7,7 +7,7 @@ using Moq;
 using NUnit.Framework;
 using Serilog;
 
-namespace host_domain_tests.CommandHandlerTests
+namespace host_domain_tests.CommandHandlers
 {
     [TestFixture]
     public class RegisterNewRoomCommandHandlerTests

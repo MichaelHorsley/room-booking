@@ -1,4 +1,4 @@
-﻿using Events;
+﻿using events;
 using host_domain.Aggregates;
 using host_domain.Repositories;
 using Moq;
@@ -39,9 +39,9 @@ namespace host_domain_tests.Aggregates
         [Test]
         public void Raise_GivenEvent_SetsAggregateIdOnEventToId()
         {
-            _sut.Raise(new RoomRegistered());
+            _sut.Raise(new RoomRegisteredEvent());
 
-            _mockEventRepository.Verify(x => x.SaveEvent(It.Is<RoomRegistered>(y => y.AggregateId.Equals(_sut.Id))));
+            _mockEventRepository.Verify(x => x.SaveEvent(It.Is<RoomRegisteredEvent>(y => y.AggregateId.Equals(_sut.Id))));
         }
     }
 }

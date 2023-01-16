@@ -1,4 +1,4 @@
-﻿namespace Events;
+﻿namespace events;
 
 public class Event
 {

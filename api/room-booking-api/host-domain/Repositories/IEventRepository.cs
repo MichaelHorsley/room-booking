@@ -1,4 +1,4 @@
-﻿using Events;
+﻿using events;
 
 namespace host_domain.Repositories;
 
