@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using host_domain.CommandHandlers;
 using host_domain.HostedServices;
+using host_domain.Repositories;
 using host_domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,18 +36,29 @@ namespace host_domain
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService(serviceProvider => 
-                        new RabbitMessageConsumerService(serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), configuration.GetConnectionString("RabbitMq"), serviceProvider));
+                        new RabbitMessageConsumerService(
+                            serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), 
+                            serviceProvider.GetService<IMessageQueueConnectionFactory>(), 
+                            configuration.GetConnectionString("RabbitMq"), 
+                            serviceProvider));
 
                     RegisterCommandHandlers(services);
+                    RegisterServices(services);
                     RegisterRepositories(services);
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();
         }
 
-        private static void RegisterRepositories(IServiceCollection services)
+        private static void RegisterServices(IServiceCollection services)
         {
             services.AddSingleton<IAggregateService, AggregateService>();
+            services.AddSingleton<IMessageQueueConnectionFactory, RabbitMqConnectionFactory>();
+        }
+
+        private static void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<IEventRepository, EventRepository>();
         }
 
         private static void RegisterCommandHandlers(IServiceCollection services)

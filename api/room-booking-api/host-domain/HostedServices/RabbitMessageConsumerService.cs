@@ -2,6 +2,7 @@
 using System.Text;
 using commands;
 using host_domain.CommandHandlers;
+using host_domain.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -13,13 +14,16 @@ namespace host_domain.HostedServices;
 public class RabbitMessageConsumerService : IHostedService
 {
     private readonly ILogger<RabbitMessageConsumerService> _logger;
+    private readonly IMessageQueueConnectionFactory _connectionFactory;
     private readonly string _connectionString;
     private readonly IServiceProvider _serviceProvider;
     private IConnection _connection;
+    private IModel _channel;
 
-    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, string connectionString, IServiceProvider serviceProvider)
+    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, IMessageQueueConnectionFactory connectionFactory, string connectionString, IServiceProvider serviceProvider)
     {
         _logger = logger;
+        _connectionFactory = connectionFactory;
         _connectionString = connectionString;
         _serviceProvider = serviceProvider;
     }
@@ -28,34 +32,16 @@ public class RabbitMessageConsumerService : IHostedService
     {
         _logger.LogInformation("Message Consumer Service is starting up");
 
-        var factory = new ConnectionFactory { HostName = _connectionString };
+        _connection = await _connectionFactory.CreateConnection(_connectionString, cancellationToken);
 
-        while (_connection == null)
+        _channel = _connection.CreateModel();
+        _channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
+
+        CreateQueuesForAllCommands(_channel);
+
+        while (!cancellationToken.IsCancellationRequested)
         {
-            try
-            {
-                _connection = factory.CreateConnection();
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning(e, "Having issues connecting to rabbitmq");
-
-                await Task.Delay(1000, cancellationToken);
-            }
-        }
-
-        _connection = factory.CreateConnection();
-
-        using (var channel = _connection.CreateModel())
-        {
-            channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
-
-            CreateQueuesForAllCommands(channel);
-
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(5000, cancellationToken);
-            }
+            await Task.Delay(5000, cancellationToken);
         }
     }
 
@@ -77,9 +63,10 @@ public class RabbitMessageConsumerService : IHostedService
 
             var service = _serviceProvider.GetService(commandHandlerForCommandType);
 
+            var commandHandlerTypeName = commandHandlerForCommandType.Name.ToLower();
             var commandTypeName = commandType.Name.ToLower();
 
-            var queue = $"domain-consumer-{commandTypeName}";
+            var queue = $"domain-consumer-{commandHandlerTypeName}";
 
             channel.QueueDeclare(queue: queue,
                 durable: true,
@@ -112,6 +99,9 @@ public class RabbitMessageConsumerService : IHostedService
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Message Consumer Service is shutting down");
+
+        _channel?.Close();
+        _channel?.Dispose();
 
         _connection?.Close();
         _connection?.Dispose();
