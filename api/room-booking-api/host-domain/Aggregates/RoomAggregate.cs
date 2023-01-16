@@ -16,7 +16,17 @@ public class RoomAggregate : Aggregate
     {
         if (!_alreadyCreated)
         {
-            Raise(new RoomRegistered());
+            Raise(new RoomRegisteredEvent
+            {
+                HostId = hostId,
+                RoomId = roomId
+            });
         }
+    }
+
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private void Apply(RoomRegisteredEvent @event)
+    {
+        _alreadyCreated = true;
     }
 }
