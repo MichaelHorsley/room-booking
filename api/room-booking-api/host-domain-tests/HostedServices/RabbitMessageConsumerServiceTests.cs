@@ -86,5 +86,18 @@ namespace host_domain_tests.HostedServices
                 _mockChannel.Verify(x => x.QueueBind(queue, "command", routingKey, null));
             }
         }
+
+        [Test]
+        public async Task StopAsync_ClosesChannel()
+        {
+            await _sut.StartAsync(new CancellationToken(true));
+            await _sut.StopAsync(new CancellationToken(true));
+
+            _mockChannel.Verify(x => x.Close(), Times.Once);
+            _mockChannel.Verify(x => x.Dispose(), Times.Once);
+            
+            _mockConnection.Verify(x => x.Close(), Times.Once);
+            _mockConnection.Verify(x => x.Dispose(), Times.Once);
+        }
     }
 }
