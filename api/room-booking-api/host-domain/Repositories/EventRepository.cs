@@ -16,8 +16,8 @@ public class EventRepository : IEventRepository
 
     public void SaveEvent<T>(T @event) where T : Event
     {
-        var coll = _db.GetCollection<T>("events");
+        var collection = _db.GetCollection<T>("events");
 
-        coll.InsertOne(@event);
+        collection.InsertOne(@event);
     }
 }

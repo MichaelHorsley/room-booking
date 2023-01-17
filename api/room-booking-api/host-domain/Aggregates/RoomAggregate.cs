@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using events;
+﻿using events;
 using host_domain.Repositories;
 
 namespace host_domain.Aggregates;
@@ -24,7 +23,6 @@ public class RoomAggregate : Aggregate
         }
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private void Apply(RoomRegisteredEvent @event)
     {
         _alreadyCreated = true;

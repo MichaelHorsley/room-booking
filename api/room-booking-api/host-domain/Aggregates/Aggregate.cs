@@ -17,7 +17,7 @@ public class Aggregate
         _eventRepository = eventRepository;
     }
 
-    public void Raise(Event @event)
+    public void Raise<T>(T @event) where T : Event
     {
         @event.AggregateId = Id;
 
