@@ -44,7 +44,7 @@ namespace host_domain
 
                     RegisterCommandHandlers(services);
                     RegisterServices(services);
-                    RegisterRepositories(services);
+                    RegisterRepositories(services, configuration);
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();
@@ -56,9 +56,9 @@ namespace host_domain
             services.AddSingleton<IMessageQueueConnectionFactory, RabbitMqConnectionFactory>();
         }
 
-        private static void RegisterRepositories(IServiceCollection services)
+        private static void RegisterRepositories(IServiceCollection services, IConfigurationRoot configuration)
         {
-            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IEventRepository>(serviceProvider => new EventRepository(configuration.GetConnectionString("MongoDb")));
         }
 
         private static void RegisterCommandHandlers(IServiceCollection services)
