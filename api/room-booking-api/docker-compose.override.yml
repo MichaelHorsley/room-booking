@@ -30,3 +30,7 @@ services:
       - ConnectionStrings__RabbitMq=rabbitmq
       - ConnectionStrings__MongoDb=mongodb://mongodb
       - Serilog__WriteTo__1__Args__serverUrl=http://logs
+  mongodb:
+    volumes:
+        - C:/DockerVolumes/MongoDb/db:/data/db
+        - C:/DockerVolumes/MongoDb/configdb:/data/configdb

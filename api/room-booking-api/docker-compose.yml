@@ -37,7 +37,7 @@ services:
   logs:
     image: datalust/seq
     volumes:
-      - D:/DockerVolumes/Seq:/data
+      - /DockerVolumes/Seq:/data
     ports:
         - "9021:80"
     environment:
@@ -55,4 +55,5 @@ services:
     ports:
         - 27017:27017
     volumes:
-        - /DockerVolumes/MongoDb/data/:/data/db
+        - /DockerVolumes/MongoDb/db:/data/db
+        - /DockerVolumes/MongoDb/configdb:/data/configdb
