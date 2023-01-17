@@ -20,6 +20,7 @@ public class Aggregate
     public void Raise<T>(T @event) where T : Event
     {
         @event.AggregateId = Id;
+        @event.AggregateVersion = Version + 1;
 
         _eventRepository.SaveEvent(@event);
     }

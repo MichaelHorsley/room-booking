@@ -42,8 +42,18 @@ namespace host_domain_tests.Aggregates
             _sut.Raise(new RoomRegisteredEvent());
 
             _mockEventRepository
-                .Verify(x => 
+                .Verify(x =>
                     x.SaveEvent(It.Is<RoomRegisteredEvent>(y => y.AggregateId.Equals(_sut.Id))));
+        }
+
+        [Test]
+        public void Raise_GivenEvent_SetsEventVersionToOneGreaterThanAggregateVersion()
+        {
+            _sut.Raise(new RoomRegisteredEvent());
+
+            _mockEventRepository
+                .Verify(x =>
+                    x.SaveEvent(It.Is<RoomRegisteredEvent>(y => y.AggregateVersion.Equals(_sut.Version + 1))));
         }
     }
 }
