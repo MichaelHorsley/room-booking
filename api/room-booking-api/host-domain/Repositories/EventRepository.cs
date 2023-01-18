@@ -1,4 +1,6 @@
 ﻿using events;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 
 namespace host_domain.Repositories;
@@ -9,6 +11,8 @@ public class EventRepository : IEventRepository
 
     public EventRepository(string connectionString)
     {
+        RegisterKnownTypes();
+
         var client = new MongoClient(connectionString);
 
         _db = client.GetDatabase("room-booking");
@@ -16,26 +20,66 @@ public class EventRepository : IEventRepository
         CreateIndexes();
     }
 
-    private void CreateIndexes()
+    private void RegisterKnownTypes()
     {
-        var collection = _db.GetCollection<Event>("events");
-
-        var options = new CreateIndexOptions { Unique = true };
-
-        var fieldDefinition = new StringFieldDefinition<Event>("AggregateId");
-        FieldDefinition<Event> secondFieldDefinition = "AggregateVersion";
-
-        var indexKeysDefinition = new IndexKeysDefinitionBuilder<Event>().Ascending(fieldDefinition).Ascending(secondFieldDefinition);
-
-        var indexModel = new CreateIndexModel<Event>(indexKeysDefinition, options);
-
-        collection.Indexes.CreateOne(indexModel);
+        try
+        {
+            BsonClassMap.RegisterClassMap<EventWrapper>();
+            BsonClassMap.RegisterClassMap<Event>();
+            BsonClassMap.RegisterClassMap<RoomRegisteredEvent>();
+        }
+        catch {}
     }
 
     public void SaveEvent<T>(T @event) where T : Event
     {
-        var collection = _db.GetCollection<T>("events");
+        var eventWrapper = new EventWrapper
+        {
+            AggregateId = @event.AggregateId,
+            AggregateVersion = @event.AggregateVersion,
+            EventType = typeof(T).Name,
+            Event = @event
+        };
 
-        collection.InsertOne(@event);
+        var collection = _db.GetCollection<EventWrapper>("events");
+
+        collection.InsertOne(eventWrapper);
+    }
+
+    public List<T> GetEvents<T>(string aggregateId) where T : Event
+    {
+        var collection = _db.GetCollection<EventWrapper>("events");
+
+        return collection
+            .AsQueryable()
+            .Where(x => x.AggregateId.Equals(aggregateId))
+            .Select(x => (T)x.Event)
+            .ToList();
+    }
+
+    private void CreateIndexes()
+    {
+        var collection = _db.GetCollection<EventWrapper>("events");
+
+        var options = new CreateIndexOptions { Unique = true };
+
+        var firstFieldDefinition = new StringFieldDefinition<EventWrapper>("AggregateId");
+        FieldDefinition<EventWrapper> secondFieldDefinition = "AggregateVersion";
+
+        var indexKeysDefinition = new IndexKeysDefinitionBuilder<EventWrapper>().Ascending(firstFieldDefinition).Ascending(secondFieldDefinition);
+
+        var indexModel = new CreateIndexModel<EventWrapper>(indexKeysDefinition, options);
+
+        collection.Indexes.CreateOne(indexModel);
+    }
+
+    internal class EventWrapper
+    {
+        [BsonId]
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string AggregateId { get; set; }
+        public int AggregateVersion { get; set; }
+        public string EventType { get; set; }
+        public object Event { get; set; }
     }
 }

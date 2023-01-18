@@ -7,7 +7,7 @@ public class Aggregate
 {
     private readonly IEventRepository _eventRepository;
     public string Id { get; }
-    public int Version { get; }
+    public int Version { get; set; }
 
     public Aggregate(string id, IEventRepository eventRepository)
     {
