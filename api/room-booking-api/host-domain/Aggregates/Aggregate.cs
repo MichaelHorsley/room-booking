@@ -1,5 +1,6 @@
 ﻿using events;
 using host_domain.Repositories;
+using host_domain.Services;
 
 namespace host_domain.Aggregates;
 
@@ -26,11 +27,6 @@ public class Aggregate
         @event.AggregateVersion = Version + 1;
 
         _eventRepository.SaveEvent(@event);
-        _eventDispatcher.DispatchEvent(@event);
+        _eventDispatcher.Dispatch(@event);
     }
-}
-
-public interface IEventDispatcher
-{
-    void DispatchEvent<T>(T @event) where T : Event;
 }

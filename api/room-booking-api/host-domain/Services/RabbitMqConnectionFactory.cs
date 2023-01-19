@@ -32,7 +32,7 @@ public class RabbitMqConnectionFactory : IMessageQueueConnectionFactory
 
                 if (connectionCount > 10)
                 {
-                    _logger.LogCritical("Unable to connect to RabbitMq");
+                    _logger.LogCritical("Unable to connect to RabbitMqService");
 
                     throw new Exception("Unable to connect to message queue");
                 }

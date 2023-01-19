@@ -1,6 +1,7 @@
 ﻿using events;
 using host_domain.Aggregates;
 using host_domain.Repositories;
+using host_domain.Services;
 using Moq;
 using NUnit.Framework;
 

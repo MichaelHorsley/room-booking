@@ -39,21 +39,22 @@ namespace host_domain
                         new RabbitMessageConsumerService(
                             serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), 
                             serviceProvider.GetService<IMessageQueueConnectionFactory>(), 
-                            configuration.GetConnectionString("RabbitMq"), 
+                            configuration.GetConnectionString("RabbitMqService"), 
                             serviceProvider));
 
                     RegisterCommandHandlers(services);
-                    RegisterServices(services);
+                    RegisterServices(services, configuration);
                     RegisterRepositories(services, configuration);
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();
         }
 
-        private static void RegisterServices(IServiceCollection services)
+        private static void RegisterServices(IServiceCollection services, IConfigurationRoot configuration)
         {
             services.AddSingleton<IAggregateService, AggregateService>();
             services.AddSingleton<IMessageQueueConnectionFactory, RabbitMqConnectionFactory>();
+            services.AddSingleton<IEventDispatcher>(serviceProvider => new RabbitMqService(serviceProvider.GetService<ILogger<RabbitMqService>>(), serviceProvider.GetService<IMessageQueueConnectionFactory>(), configuration.GetConnectionString("RabbitMqService")));
         }
 
         private static void RegisterRepositories(IServiceCollection services, IConfigurationRoot configuration)
