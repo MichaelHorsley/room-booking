@@ -10,20 +10,22 @@ namespace host_domain_tests.Aggregates
     public class AggregateTests
     {
         private Mock<IEventRepository> _mockEventRepository;
+        private Mock<IEventDispatcher> _mockEventDispatcher;
         private Aggregate _sut;
 
         [SetUp]
         public void SetUp()
         {
             _mockEventRepository = new Mock<IEventRepository>();
+            _mockEventDispatcher = new Mock<IEventDispatcher>();
 
-            _sut = new Aggregate("123", _mockEventRepository.Object);
+            _sut = new Aggregate("123", _mockEventRepository.Object, _mockEventDispatcher.Object);
         }
 
         [Test]
         public void SetsIdFromConstructor()
         {
-            var aggregate = new Aggregate("id", null);
+            var aggregate = new Aggregate("id", null, null);
 
             Assert.AreEqual("id", aggregate.Id);
         }
@@ -31,7 +33,7 @@ namespace host_domain_tests.Aggregates
         [Test]
         public void SetsVersionToZero()
         {
-            var aggregate = new Aggregate("id", null);
+            var aggregate = new Aggregate("id", null, null);
 
             Assert.AreEqual(0, aggregate.Version);
         }

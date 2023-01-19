@@ -11,13 +11,15 @@ namespace host_domain_tests.Aggregates
     {
         private RoomAggregate _sut;
         private Mock<IEventRepository> _mockEventRepository;
+        private Mock<IEventDispatcher> _mockEventDispatcher;
 
         [SetUp]
         public void SetUp()
         {
             _mockEventRepository = new Mock<IEventRepository>();
+            _mockEventDispatcher = new Mock<IEventDispatcher>();
 
-            _sut = new RoomAggregate("aggregateId", _mockEventRepository.Object);
+            _sut = new RoomAggregate("aggregateId", _mockEventRepository.Object, _mockEventDispatcher.Object);
         }
 
         [Test]

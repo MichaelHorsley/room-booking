@@ -8,15 +8,17 @@ namespace host_domain.Services;
 public class AggregateService : IAggregateService
 {
     private readonly IEventRepository _eventRepository;
+    private readonly IEventDispatcher _eventDispatcher;
 
-    public AggregateService(IEventRepository eventRepository)
+    public AggregateService(IEventRepository eventRepository, IEventDispatcher eventDispatcher)
     {
         _eventRepository = eventRepository;
+        _eventDispatcher = eventDispatcher;
     }
 
     public T Get<T>(string id) where T : Aggregate
     {
-        var instance = (T)Activator.CreateInstance(typeof(T), id, _eventRepository);
+        var instance = (T)Activator.CreateInstance(typeof(T), id, _eventRepository, _eventDispatcher);
 
         var events = _eventRepository.GetEvents<Event>(id);
 

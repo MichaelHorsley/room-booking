@@ -12,14 +12,16 @@ namespace host_domain_tests.Services
     {
         private AggregateService _sut;
         private Mock<IEventRepository> _mockEventRepository;
+        private Mock<IEventDispatcher> _mockEventDispatcher;
 
         [SetUp]
         public void SetUp()
         {
             _mockEventRepository = new Mock<IEventRepository>();
+            _mockEventDispatcher = new Mock<IEventDispatcher>();
             _mockEventRepository.Setup(x => x.GetEvents<Event>(It.IsAny<string>())).Returns(new List<Event>());
 
-            _sut = new AggregateService(_mockEventRepository.Object);
+            _sut = new AggregateService(_mockEventRepository.Object, _mockEventDispatcher.Object);
         }
 
         [Test]

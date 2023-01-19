@@ -15,16 +15,18 @@ namespace host_domain_tests.CommandHandlers
         private RegisterNewRoomCommandHandler _sut;
         private Mock<IAggregateService> _mockAggregateService;
         private Mock<IEventRepository> _mockEventRepository;
+        private Mock<IEventDispatcher> _mockEventDispatcher;
 
         [SetUp]
         public void SetUp()
         {
             _mockAggregateService = new Mock<IAggregateService>();
             _mockEventRepository = new Mock<IEventRepository>();
+            _mockEventDispatcher = new Mock<IEventDispatcher>();
 
             _mockAggregateService
                 .Setup(x => x.Get<RoomAggregate>(It.IsAny<string>()))
-                .Returns(new RoomAggregate("", _mockEventRepository.Object));
+                .Returns(new RoomAggregate("", _mockEventRepository.Object, _mockEventDispatcher.Object));
 
             _sut = new RegisterNewRoomCommandHandler(new Mock<ILogger>().Object, _mockAggregateService.Object);
         }

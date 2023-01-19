@@ -7,7 +7,7 @@ public class RoomAggregate : Aggregate
 {
     private bool _alreadyCreated = false;
 
-    public RoomAggregate(string id, IEventRepository eventRepository) : base(id, eventRepository)
+    public RoomAggregate(string id, IEventRepository eventRepository, IEventDispatcher eventDispatcher) : base(id, eventRepository, eventDispatcher)
     {
     }
     
