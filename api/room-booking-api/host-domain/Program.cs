@@ -30,7 +30,7 @@ namespace host_domain
                 .CreateLogger();
 
             logger.Information("Starting up domain service");
-            
+
             await Host
                 .CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
@@ -38,8 +38,8 @@ namespace host_domain
                     services.AddHostedService(serviceProvider => 
                         new RabbitMessageConsumerService(
                             serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), 
-                            serviceProvider.GetService<IMessageQueueConnectionFactory>(), 
-                            configuration.GetConnectionString("RabbitMqService"), 
+                            serviceProvider.GetService<IMessageQueueConnectionFactory>(),
+                            configuration.GetConnectionString("RabbitMq"), 
                             serviceProvider));
 
                     RegisterCommandHandlers(services);
@@ -54,7 +54,7 @@ namespace host_domain
         {
             services.AddSingleton<IAggregateService, AggregateService>();
             services.AddSingleton<IMessageQueueConnectionFactory, RabbitMqConnectionFactory>();
-            services.AddSingleton<IEventDispatcher>(serviceProvider => new RabbitMqService(serviceProvider.GetService<ILogger<RabbitMqService>>(), serviceProvider.GetService<IMessageQueueConnectionFactory>(), configuration.GetConnectionString("RabbitMqService")));
+            services.AddSingleton<IEventDispatcher>(serviceProvider => new RabbitMqService(serviceProvider.GetService<ILogger<RabbitMqService>>(), serviceProvider.GetService<IMessageQueueConnectionFactory>(), configuration.GetConnectionString("RabbitMq")));
         }
 
         private static void RegisterRepositories(IServiceCollection services, IConfigurationRoot configuration)
