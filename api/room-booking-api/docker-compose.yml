@@ -34,6 +34,15 @@ services:
       - "logs"
       - "rabbitmq"
       - "mongodb"
+  host-projections:
+    image: ${DOCKER_REGISTRY-}hostprojections
+    build:
+      context: .
+      dockerfile: host-projections/Dockerfile
+    depends_on:
+      - "logs"
+      - "rabbitmq"
+      - "mongodb"
   logs:
     image: datalust/seq
     volumes:

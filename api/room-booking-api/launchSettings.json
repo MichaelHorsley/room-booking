@@ -7,6 +7,7 @@
         "guest-api": "StartDebugging",
         "host-api": "StartDebugging",
         "host-domain": "StartDebugging",
+        "host-projections": "StartDebugging",
         "logs": "StartWithoutDebugging",
         "rabbitmq": "StartWithoutDebugging"
       }
