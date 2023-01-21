@@ -1,8 +1,7 @@
 namespace host_api.Requests;
 
-public class RegisterNewRoomRequest
+public class RegisterNewRoomRequest : Request
 {
     public Guid HostId { get; set; }
     public string RoomId { get; set; }
-    public Guid CorrelationId { get; set; } = Guid.NewGuid();
 }

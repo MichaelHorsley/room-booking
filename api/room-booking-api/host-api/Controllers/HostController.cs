@@ -8,21 +8,21 @@ namespace host_api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class RoomController : ControllerBase
+public class HostController : ControllerBase
 {
     private readonly ICommandHandler _commandHandler;
     private readonly IMapper _mapper;
 
-    public RoomController(ICommandHandler commandHandler, IMapper mapper)
+    public HostController(ICommandHandler commandHandler, IMapper mapper)
     {
         _commandHandler = commandHandler;
         _mapper = mapper;
     }
 
-    [HttpPost("RegisterNewRoom", Name = "Register new room")]
-    public IActionResult RegisterNewRoom(RegisterNewRoomRequest request)
+    [HttpPost("RegisterNewHost", Name = "Register new host")]
+    public IActionResult RegisterNewHost(RegisterNewHostRequest request)
     {
-        var command = _mapper.Map<RegisterNewRoomCommand>(request);
+        var command = _mapper.Map<RegisterNewHostCommand>(request);
 
         _commandHandler.Dispatch(command);
 

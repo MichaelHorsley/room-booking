@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "host-domain-tests", "host-d
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "events", "Events\events.csproj", "{399072A9-D4A8-44DD-8A65-13E9A6B0E979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host-projections", "host-projections\host-projections.csproj", "{ABD489EC-08E8-47DC-8D42-F750F3043024}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "host-projections", "host-projections\host-projections.csproj", "{ABD489EC-08E8-47DC-8D42-F750F3043024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "view-models", "view-models\view-models.csproj", "{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{ABD489EC-08E8-47DC-8D42-F750F3043024}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD489EC-08E8-47DC-8D42-F750F3043024}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD489EC-08E8-47DC-8D42-F750F3043024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AF430303-C727-41E7-AAE9-DC6BA14D6C95} = {7925963F-0F2E-4516-8C53-0ACF7273CB91}
 		{399072A9-D4A8-44DD-8A65-13E9A6B0E979} = {7925963F-0F2E-4516-8C53-0ACF7273CB91}
+		{A7FDFE4E-3BB2-48CD-B54E-E693053D85E5} = {7925963F-0F2E-4516-8C53-0ACF7273CB91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA23773E-6FFD-4DA3-AAF8-565A3A118438}
