@@ -2,7 +2,7 @@
 
 namespace host_projections.Projections
 {
-    public class AllRoomsViewModelProjection 
+    public class AllRoomsViewModelProjection
         : IHandleEvent<RoomRegisteredEvent>
     {
         public Task Handle(RoomRegisteredEvent command)

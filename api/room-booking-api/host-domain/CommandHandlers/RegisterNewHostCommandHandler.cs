@@ -1,6 +1,8 @@
 ﻿using commands;
 using host_domain.Services;
 using Serilog;
+using System.Text.RegularExpressions;
+using host_domain.Aggregates;
 
 namespace host_domain.CommandHandlers;
 
@@ -19,9 +21,13 @@ public class RegisterNewHostCommandHandler : IHandleCommand<RegisterNewHostComma
     {
         _logger.Information("Handling command with CorrelationId:{correlationId}", command.CorrelationId);
 
-        //var roomAggregate = _aggregateService.Get<RoomAggregate>($"{command.HostId}|{command.RoomId}");
+        var aggregateId = Regex.Replace((command.FirstName + command.Surname + command.Email).ToLower(), "[^0-9a-zA-Z]+", "");
 
-        //roomAggregate.RegisterNewRoom(command.HostId, command.RoomId);
+        var aggregateGuid = GuidUtility.Create(aggregateId);
+
+        var roomAggregate = _aggregateService.Get<HostAggregate>(aggregateGuid.ToString());
+
+        roomAggregate.RegisterNewHost(command.Email, command.FirstName, command.Surname);
 
         return Task.CompletedTask;
     }
