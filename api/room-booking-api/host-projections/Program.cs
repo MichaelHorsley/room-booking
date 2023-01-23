@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using host_projections.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -28,7 +30,7 @@ namespace host_projections
                 .CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-
+                    services.AddSingleton<IViewModelRepository>(serviceProvider => new ViewModelRepository(configuration.GetConnectionString("MongoDb")));
                 })
                 .UseSerilog(logger)
                 .RunConsoleAsync();

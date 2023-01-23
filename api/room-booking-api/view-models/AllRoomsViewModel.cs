@@ -1,6 +1,6 @@
 ﻿namespace view_models
 {
-    public class AllRoomsViewModel
+    public class AllRoomsViewModel : ViewModel
     {
 
     }
