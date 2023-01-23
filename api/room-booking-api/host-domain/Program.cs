@@ -36,8 +36,8 @@ namespace host_domain
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService(serviceProvider => 
-                        new RabbitMessageConsumerService(
-                            serviceProvider.GetService<ILogger<RabbitMessageConsumerService>>(), 
+                        new CommandConsumerHostedService(
+                            serviceProvider.GetService<ILogger<CommandConsumerHostedService>>(), 
                             serviceProvider.GetService<IMessageQueueConnectionFactory>(),
                             configuration.GetConnectionString("RabbitMq"), 
                             serviceProvider));

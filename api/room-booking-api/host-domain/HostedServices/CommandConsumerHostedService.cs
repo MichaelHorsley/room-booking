@@ -11,16 +11,16 @@ using RabbitMQ.Client.Events;
 
 namespace host_domain.HostedServices;
 
-public class RabbitMessageConsumerService : IHostedService
+public class CommandConsumerHostedService : IHostedService
 {
-    private readonly ILogger<RabbitMessageConsumerService> _logger;
+    private readonly ILogger<CommandConsumerHostedService> _logger;
     private readonly IMessageQueueConnectionFactory _connectionFactory;
     private readonly string _connectionString;
     private readonly IServiceProvider _serviceProvider;
     private IConnection _connection;
     private IModel _channel;
 
-    public RabbitMessageConsumerService(ILogger<RabbitMessageConsumerService> logger, IMessageQueueConnectionFactory connectionFactory, string connectionString, IServiceProvider serviceProvider)
+    public CommandConsumerHostedService(ILogger<CommandConsumerHostedService> logger, IMessageQueueConnectionFactory connectionFactory, string connectionString, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _connectionFactory = connectionFactory;

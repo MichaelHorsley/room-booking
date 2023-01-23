@@ -12,9 +12,9 @@ namespace host_domain_tests.HostedServices
     [TestFixture]
     public class RabbitMessageConsumerServiceTests
     {
-        private RabbitMessageConsumerService _sut;
+        private CommandConsumerHostedService _sut;
 
-        private Mock<ILogger<RabbitMessageConsumerService>> _mockLogger;
+        private Mock<ILogger<CommandConsumerHostedService>> _mockLogger;
         private Mock<IMessageQueueConnectionFactory> _mockMessageQueueConnectFactory;
         private Mock<IServiceProvider> _mockServiceProvider;
 
@@ -24,7 +24,7 @@ namespace host_domain_tests.HostedServices
         [SetUp]
         public void SetUp()
         {
-            _mockLogger = new Mock<ILogger<RabbitMessageConsumerService>>();
+            _mockLogger = new Mock<ILogger<CommandConsumerHostedService>>();
             _mockServiceProvider = new Mock<IServiceProvider>();
 
             _mockChannel = new Mock<IModel>();
@@ -37,7 +37,7 @@ namespace host_domain_tests.HostedServices
                 .Setup(x => x.CreateConnection(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(_mockConnection.Object));
 
-            _sut = new RabbitMessageConsumerService(_mockLogger.Object, _mockMessageQueueConnectFactory.Object, "", _mockServiceProvider.Object);
+            _sut = new CommandConsumerHostedService(_mockLogger.Object, _mockMessageQueueConnectFactory.Object, "", _mockServiceProvider.Object);
         }
 
         [Test]
