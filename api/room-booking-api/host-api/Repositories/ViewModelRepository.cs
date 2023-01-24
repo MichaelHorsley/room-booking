@@ -16,13 +16,13 @@ public class ViewModelRepository : IViewModelRepository
 
     public T Get<T>(string id) where T : ViewModel
     {
-        var mongoCollection = _db.GetCollection<T>(nameof(T));
+        var mongoCollection = _db.GetCollection<T>(typeof(T).Name);
 
         return mongoCollection.AsQueryable().FirstOrDefault(x => x.Id == id);
     }
 
     public List<T> GetAll<T>() where T : ViewModel
     {
-        return _db.GetCollection<T>(nameof(T)).AsQueryable().ToList();
+        return _db.GetCollection<T>(typeof(T).Name).AsQueryable().ToList();
     }
 }

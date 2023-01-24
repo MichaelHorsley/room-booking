@@ -23,7 +23,7 @@ public class ViewModelRepository : IViewModelRepository
 
     public void Save<T>(T objectToBeSaved) where T : ViewModel
     {
-        var mongoCollection = _db.GetCollection<T>(nameof(T));
+        var mongoCollection = _db.GetCollection<T>(typeof(T).Name);
 
         mongoCollection.InsertOne(objectToBeSaved);
     }

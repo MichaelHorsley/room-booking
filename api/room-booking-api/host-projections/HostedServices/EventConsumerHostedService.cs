@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
-using events;
+using System.Text;
 using host_projections.Projections;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using rabbitmq_infrastructure;
 
 namespace host_projections.HostedServices;
@@ -27,12 +29,12 @@ public class EventConsumerHostedService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Message Consumer Service is starting up");
+        _logger.LogInformation("Event Consumer Service is starting up");
 
         _connection = await _connectionFactory.CreateConnection(_connectionString, cancellationToken);
 
         _channel = _connection.CreateModel();
-        _channel.ExchangeDeclare(exchange: "command", type: "direct", durable: true, autoDelete: false);
+        _channel.ExchangeDeclare(exchange: "event", type: "direct", durable: true, autoDelete: false);
 
         CreateQueuesForAllProjections(_channel);
 
@@ -57,57 +59,55 @@ public class EventConsumerHostedService : IHostedService
 
     private void CreateQueuesForAllProjections(IModel channel)
     {
-        var types = Assembly.GetAssembly(typeof(Event))
-            .GetTypes()
-            .Where(x => x.IsSubclassOf(typeof(Event)))
-            .ToList();
-
         var viewModelProjectionTypes = Assembly.GetAssembly(typeof(HostListViewModelProjection))
             .GetTypes()
             .Where(x => x.GetInterfaces().Any(y => y.Name.Contains("IHandleEvent"))).ToList();
 
         foreach (var viewModelProjectionType in viewModelProjectionTypes)
         {
-                
-        }
+            var service = _serviceProvider.GetService(viewModelProjectionType);
 
-        foreach (var eventType in types)
-        {
-            //    var commandHandlerForCommandType = viewModelProjectionTypes.FirstOrDefault(x =>
-            //        x.GetInterfaces().First().GenericTypeArguments.First() == commandType);
+            var projectTypeName = viewModelProjectionType.Name.ToLower();
 
-            //    var service = _serviceProvider.GetService(commandHandlerForCommandType);
+            var eventProjectionIsListeningTo = viewModelProjectionType.GetInterfaces().Select(x => x.GenericTypeArguments.First());
 
-            //    var commandHandlerTypeName = commandHandlerForCommandType.Name.ToLower();
-            //    var commandTypeName = commandType.Name.ToLower();
+            var queue = $"host-projection-{projectTypeName}";
 
-            //    var queue = $"domain-consumer-{commandHandlerTypeName}";
+            channel.QueueDeclare(queue: queue,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
-            //    channel.QueueDeclare(queue: queue,
-            //        durable: true,
-            //        exclusive: false,
-            //        autoDelete: false,
-            //        arguments: null);
+            foreach (var eventType in eventProjectionIsListeningTo)
+            {
+                var eventTypeName = eventType.Name.ToLower();
 
-            //    channel.QueueBind(queue: queue,
-            //        exchange: "command",
-            //        routingKey: commandTypeName);
+                channel.QueueBind(queue: queue,
+                    exchange: "event",
+                    routingKey: eventTypeName);
+            }
 
-            //    var consumer = new EventingBasicConsumer(channel);
+            var consumer = new EventingBasicConsumer(channel);
 
-            //    consumer.Received += (model, ea) =>
-            //    {
-            //        var body = ea.Body.ToArray();
-            //        var message = Encoding.UTF8.GetString(body);
+            consumer.Received += (model, ea) =>
+            {
+                var eaRoutingKey = ea.RoutingKey;
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
 
-            //        var method = service.GetType().GetMethod("Handle");
+                var methodInfos = service.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public);
 
-            //        method.Invoke(service, new object[] { JsonConvert.DeserializeObject(message, service.GetType().GetInterfaces().First().GenericTypeArguments.First()) });
-            //    };
+                var methodInfo = methodInfos.First(x => x.GetParameters().Any(y => y.ParameterType.Name.ToLower().Equals(eaRoutingKey)));
 
-            //    channel.BasicConsume(queue: queue,
-            //        autoAck: true,
-            //        consumer: consumer);
+                var parameterType = methodInfo.GetParameters().First(x => x.ParameterType.Name.ToLower().Equals(eaRoutingKey));
+
+                methodInfo.Invoke(service, new object[] { JsonConvert.DeserializeObject(message, parameterType.ParameterType) });
+            };
+
+            channel.BasicConsume(queue: queue,
+                autoAck: true,
+                consumer: consumer);
         }
     }
 }
