@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 using Newtonsoft.Json;
+using rabbitmq_infrastructure;
 
 namespace host_domain.Services;
 

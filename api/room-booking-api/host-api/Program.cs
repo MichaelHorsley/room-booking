@@ -2,6 +2,7 @@ using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using host_api.Mapping;
+using host_api.Repositories;
 using host_api.Services;
 using host_api.Validation;
 using Serilog;
@@ -51,6 +52,8 @@ namespace host_api
 
             // Add Services
             builder.Services.AddSingleton<ICommandHandler>(_ => new RabbitMqCommandHandler(configuration.GetConnectionString("RabbitMq")));
+
+            builder.Services.AddSingleton<IViewModelRepository>(_ => new ViewModelRepository(configuration.GetConnectionString("MongoDb")));
 
             // Build application
             var app = builder.Build();

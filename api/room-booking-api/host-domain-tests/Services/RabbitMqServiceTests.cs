@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using RabbitMQ.Client;
+using rabbitmq_infrastructure;
 
 namespace host_domain_tests.Services
 {

@@ -2,12 +2,12 @@
 using System.Text;
 using commands;
 using host_domain.CommandHandlers;
-using host_domain.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using rabbitmq_infrastructure;
 
 namespace host_domain.HostedServices;
 

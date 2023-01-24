@@ -1,17 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
+using Serilog;
 
-namespace host_domain.Services;
+namespace rabbitmq_infrastructure;
 
 public class RabbitMqConnectionFactory : IMessageQueueConnectionFactory
 {
-    private readonly ILogger<RabbitMqConnectionFactory> _logger;
-
-    public RabbitMqConnectionFactory(ILogger<RabbitMqConnectionFactory> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task<IConnection> CreateConnection(string hostName, CancellationToken cancellationToken)
     {
         IConnection connection = null;
@@ -28,11 +21,11 @@ public class RabbitMqConnectionFactory : IMessageQueueConnectionFactory
             }
             catch (Exception e)
             {
-                _logger.LogWarning(e, "Having issues connecting to rabbitmq");
+                Log.Logger.Warning(e, "Having issues connecting to rabbitmq");
 
                 if (connectionCount > 10)
                 {
-                    _logger.LogCritical("Unable to connect to RabbitMqService");
+                    Log.Logger.Fatal("Unable to connect to RabbitMqService");
 
                     throw new Exception("Unable to connect to message queue");
                 }

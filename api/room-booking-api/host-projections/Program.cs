@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client.Events;
 using Serilog;
+using Newtonsoft.Json;
 
 namespace host_projections
 {

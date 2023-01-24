@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace host_domain.Services;
+namespace rabbitmq_infrastructure;
 
 public interface IMessageQueueConnectionFactory
 {
