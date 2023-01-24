@@ -34,6 +34,8 @@ namespace host_api
             // Build configuration from appsettings
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("appsettings.json");
+            configurationBuilder.AddEnvironmentVariables();
+
             var configuration = configurationBuilder.Build();
 
             // Build logging
