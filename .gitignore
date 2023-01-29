@@ -397,3 +397,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 Deployment/
+deployment_version.txt
+Deploy/api_deploy.yaml
+Deploy/creds.sh
