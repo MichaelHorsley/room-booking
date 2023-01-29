@@ -5,11 +5,23 @@ namespace rabbitmq_infrastructure;
 
 public class RabbitMqConnectionFactory : IMessageQueueConnectionFactory
 {
-    public async Task<IConnection> CreateConnection(string hostName, CancellationToken cancellationToken)
+    public async Task<IConnection> CreateConnection(string uri, CancellationToken cancellationToken)
     {
         IConnection connection = null;
 
-        var factory = new ConnectionFactory { HostName = hostName };
+        ConnectionFactory factory;
+
+        if (uri.Contains("amqps"))
+        {
+            factory = new ConnectionFactory
+            {
+                Uri = new Uri(uri)
+            };
+        }
+        else
+        {
+            factory = new ConnectionFactory { HostName = uri };
+        }
 
         var connectionCount = 1;
 

@@ -4,5 +4,5 @@ namespace rabbitmq_infrastructure;
 
 public interface IMessageQueueConnectionFactory
 {
-    Task<IConnection> CreateConnection(string hostName, CancellationToken cancellationToken);
+    Task<IConnection> CreateConnection(string uri, CancellationToken cancellationToken);
 }

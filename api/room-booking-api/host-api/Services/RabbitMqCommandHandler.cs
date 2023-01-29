@@ -10,9 +10,21 @@ public class RabbitMqCommandHandler : ICommandHandler
 {
     private readonly IConnection _connection;
 
-    public RabbitMqCommandHandler(string hostname)
+    public RabbitMqCommandHandler(string uri)
     {
-        var factory = new ConnectionFactory { HostName = hostname };
+        ConnectionFactory factory;
+
+        if (uri.Contains("amqps"))
+        {
+            factory = new ConnectionFactory
+            {
+                Uri = new Uri(uri)
+            };
+        }
+        else
+        {
+            factory = new ConnectionFactory { HostName = uri };
+        }
 
         _connection = factory.CreateConnection();
 
