@@ -30,6 +30,10 @@ spec:
     port: 80
     targetPort: 80
     protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: TCP
   selector:
     app: room-booking-host-api
 ---
@@ -68,4 +72,16 @@ spec:
               secretKeyRef:
                 name: host-secrets
                 key: seq-url
-                optional: false # same as default; "mysecret" must exist
+                optional: false
+          - name: ConnectionStrings__RabbitMq
+            valueFrom:
+              secretKeyRef:
+                name: host-secrets
+                key: rabbitmq
+                optional: false
+          - name: ConnectionStrings__MongoDb
+            valueFrom:
+              secretKeyRef:
+                name: host-secrets
+                key: mongodb
+                optional: false
