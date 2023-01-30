@@ -6,20 +6,20 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-COPY ["view-models/view-models.csproj", "view-models/"]
+COPY ["commands/commands.csproj", "commands/"]
 COPY ["events/events.csproj", "events/"]
 COPY ["rabbitmq-infrastructure/rabbitmq-infrastructure.csproj", "rabbitmq-infrastructure/"]
-COPY ["host-projections/host-projections.csproj", "host-projections/"]
+COPY ["host-domain/host-domain.csproj", "host-domain/"]
 
-RUN dotnet restore "host-projections/host-projections.csproj"
+RUN dotnet restore "host-domain/host-domain.csproj"
 
 COPY . .
 
-WORKDIR "/src/host-projections"
-RUN dotnet build "host-projections.csproj" -c Release -o /app/build
+WORKDIR "/src/host-domain"
+RUN dotnet build "host-domain.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "host-projections.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "host-domain.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 
@@ -30,4 +30,4 @@ ENV LANG en_GB.UTF-8
 
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "host-projections.dll"]
+ENTRYPOINT ["dotnet", "host-domain.dll"]

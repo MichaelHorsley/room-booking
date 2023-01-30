@@ -400,3 +400,8 @@ Deployment/
 deployment_version.txt
 Deploy/api_deploy.yaml
 Deploy/creds.sh
+deployment_domain_version.txt
+deployment_projections_version.txt
+deployment_api_version.txt
+Deploy/host_domain_deploy.yaml
+Deploy/host_projections_deploy.yaml

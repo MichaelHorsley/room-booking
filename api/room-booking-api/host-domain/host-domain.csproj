@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\commands\commands.csproj" />
-    <ProjectReference Include="..\Events\events.csproj" />
+    <ProjectReference Include="..\events\events.csproj" />
     <ProjectReference Include="..\rabbitmq-infrastructure\rabbitmq-infrastructure.csproj" />
   </ItemGroup>
 

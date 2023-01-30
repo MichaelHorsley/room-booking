@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Events\events.csproj" />
+    <ProjectReference Include="..\events\events.csproj" />
     <ProjectReference Include="..\rabbitmq-infrastructure\rabbitmq-infrastructure.csproj" />
     <ProjectReference Include="..\view-models\view-models.csproj" />
   </ItemGroup>
