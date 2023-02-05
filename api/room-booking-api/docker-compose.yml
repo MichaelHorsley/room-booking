@@ -25,6 +25,33 @@ services:
       - "logs"
       - "rabbitmq"
       - "mongodb"
+  admin-acl:
+    image: ${DOCKER_REGISTRY-}adminacl
+    build:
+      context: .
+      dockerfile: admin-acl/Dockerfile
+    depends_on:
+      - "logs"
+      - "rabbitmq"
+      - "mongodb"
+  admin-domain:
+    image: ${DOCKER_REGISTRY-}admindomain
+    build:
+      context: .
+      dockerfile: admin-domain/Dockerfile
+    depends_on:
+      - "logs"
+      - "rabbitmq"
+      - "mongodb"
+  admin-projections:
+    image: ${DOCKER_REGISTRY-}adminprojections
+    build:
+      context: .
+      dockerfile: admin-projections/Dockerfile
+    depends_on:
+      - "logs"
+      - "rabbitmq"
+      - "mongodb"
   host-domain:
     image: ${DOCKER_REGISTRY-}hostdomain
     build:
