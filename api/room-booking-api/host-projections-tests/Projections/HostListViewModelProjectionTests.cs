@@ -24,7 +24,7 @@ namespace host_projections_tests.Projections
         [Test]
         public void SavesObjectWithCorrectId()
         {
-            var hostRegisteredEvent = new HostRegisteredEvent
+            var hostRegisteredEvent = new HostSignedUpEvent
             {
                 AggregateId = Guid.NewGuid().ToString()
             };
@@ -37,7 +37,7 @@ namespace host_projections_tests.Projections
         [Test]
         public void SavesObjectWithCorrectFirstName()
         {
-            var hostRegisteredEvent = new HostRegisteredEvent
+            var hostRegisteredEvent = new HostSignedUpEvent
             {
                 FirstName = Guid.NewGuid().ToString()
             };
@@ -50,7 +50,7 @@ namespace host_projections_tests.Projections
         [Test]
         public void SavesObjectWithCorrectSurname()
         {
-            var hostRegisteredEvent = new HostRegisteredEvent
+            var hostRegisteredEvent = new HostSignedUpEvent
             {
                 Surname = Guid.NewGuid().ToString()
             };
@@ -63,7 +63,7 @@ namespace host_projections_tests.Projections
         [Test]
         public void SavesObjectWithCorrectEmail()
         {
-            var hostRegisteredEvent = new HostRegisteredEvent
+            var hostRegisteredEvent = new HostSignedUpEvent
             {
                 Email = Guid.NewGuid().ToString()
             };

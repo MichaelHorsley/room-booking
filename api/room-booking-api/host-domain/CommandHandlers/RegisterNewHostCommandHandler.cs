@@ -6,7 +6,7 @@ using host_domain.Aggregates;
 
 namespace host_domain.CommandHandlers;
 
-public class RegisterNewHostCommandHandler : IHandleCommand<RegisterNewHostCommand>
+public class RegisterNewHostCommandHandler : IHandleCommand<SignUpNewHostCommand>
 {
     private readonly ILogger _logger;
     private readonly IAggregateService _aggregateService;
@@ -17,7 +17,7 @@ public class RegisterNewHostCommandHandler : IHandleCommand<RegisterNewHostComma
         _aggregateService = aggregateService;
     }
 
-    public Task Handle(RegisterNewHostCommand command)
+    public Task Handle(SignUpNewHostCommand command)
     {
         _logger.Information("Handling command with CorrelationId:{correlationId}", command.CorrelationId);
 
@@ -27,7 +27,7 @@ public class RegisterNewHostCommandHandler : IHandleCommand<RegisterNewHostComma
 
         var roomAggregate = _aggregateService.Get<HostAggregate>(aggregateGuid.ToString());
 
-        roomAggregate.RegisterNewHost(command.Email, command.FirstName, command.Surname);
+        roomAggregate.SignUp(command.Email, command.FirstName, command.Surname);
 
         return Task.CompletedTask;
     }

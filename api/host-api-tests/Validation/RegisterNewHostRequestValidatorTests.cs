@@ -7,15 +7,15 @@ namespace host_api_tests.Validation;
 [TestFixture]
 public class RegisterNewHostRequestValidatorTests
 {
-    private RegisterNewHostRequestValidator _sut;
-    private RegisterNewHostRequest _request;
+    private SignUpNewHostRequestValidator _sut;
+    private SignUpNewHostRequest _request;
 
     [SetUp]
     public void SetUp()
     {
-        _sut = new RegisterNewHostRequestValidator();
+        _sut = new SignUpNewHostRequestValidator();
 
-        _request = new RegisterNewHostRequest
+        _request = new SignUpNewHostRequest
         {
             FirstName = "Test-First-Name",
             Surname = "Test-Surname",

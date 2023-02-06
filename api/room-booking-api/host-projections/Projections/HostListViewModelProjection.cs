@@ -5,7 +5,7 @@ using view_models;
 namespace host_projections.Projections;
 
 public class HostListViewModelProjection
-    : IHandleEvent<HostRegisteredEvent>
+    : IHandleEvent<HostSignedUpEvent>
 {
     private readonly IViewModelRepository _viewModelRepository;
 
@@ -14,7 +14,7 @@ public class HostListViewModelProjection
         _viewModelRepository = viewModelRepository;
     }
 
-    public Task Handle(HostRegisteredEvent @event)
+    public Task Handle(HostSignedUpEvent @event)
     {
         _viewModelRepository.Save(new AllHostsViewModel
         {

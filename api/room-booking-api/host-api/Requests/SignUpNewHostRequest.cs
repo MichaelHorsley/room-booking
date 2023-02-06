@@ -1,6 +1,6 @@
-﻿namespace events;
+namespace host_api.Requests;
 
-public class HostRegisteredEvent : Event
+public class SignUpNewHostRequest : Request
 {
     public string Email { get; set; }
     public string FirstName { get; set; }

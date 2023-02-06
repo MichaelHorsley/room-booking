@@ -31,10 +31,10 @@ public class HostController : ControllerBase
         return new JsonResult(allHosts);
     }
 
-    [HttpPost("RegisterNewHost", Name = "Register new host")]
-    public IActionResult RegisterNewHost(RegisterNewHostRequest request)
+    [HttpPost("SignUp", Name = "New hosts sign up here")]
+    public IActionResult SignUpNewHost(SignUpNewHostRequest request)
     {
-        var command = _mapper.Map<RegisterNewHostCommand>(request);
+        var command = _mapper.Map<SignUpNewHostCommand>(request);
 
         _commandHandler.Dispatch(command);
 

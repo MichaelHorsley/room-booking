@@ -1,6 +1,6 @@
 namespace commands;
 
-public class RegisterNewHostCommand : Command
+public class SignUpNewHostCommand : Command
 {
     public string Email { get; set; }
     public string FirstName { get; set; }

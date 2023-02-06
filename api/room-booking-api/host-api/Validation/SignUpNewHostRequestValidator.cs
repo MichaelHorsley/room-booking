@@ -3,9 +3,9 @@ using host_api.Requests;
 
 namespace host_api.Validation;
 
-public class RegisterNewHostRequestValidator : AbstractValidator<RegisterNewHostRequest>
+public class SignUpNewHostRequestValidator : AbstractValidator<SignUpNewHostRequest>
 {
-    public RegisterNewHostRequestValidator()
+    public SignUpNewHostRequestValidator()
     {
         RuleFor(request => request.Email).NotEmpty();
         RuleFor(request => request.FirstName).NotEmpty();

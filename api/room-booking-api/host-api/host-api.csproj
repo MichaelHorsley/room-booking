@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Requests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\commands\commands.csproj" />
     <ProjectReference Include="..\view-models\view-models.csproj" />
   </ItemGroup>

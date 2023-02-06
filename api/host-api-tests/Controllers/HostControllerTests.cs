@@ -30,21 +30,21 @@ internal class HostControllerTests
     }
 
     [Test]
-    public async Task RegisterNewHost_GivenValidData_RaisesCommand()
+    public async Task SignUpNewHost_GivenValidData_RaisesCommand()
     {
-        var request = new RegisterNewHostRequest
+        var request = new SignUpNewHostRequest
         {
                 FirstName = "TestFirstName",
                 Surname = "TestSurname",
                 Email = "Test.Email@invalid"
         };
 
-        var response = await SendApiRequest("/Host/RegisterNewHost", request);
+        var response = await SendApiRequest("/Host/SignUp", request);
 
         response.EnsureSuccessStatusCode();
         _mockCommandHandler
             .Verify(x =>
-                    x.Dispatch(It.Is<RegisterNewHostCommand>(y =>
+                    x.Dispatch(It.Is<SignUpNewHostCommand>(y =>
                         y.FirstName.Equals(request.FirstName)
                         && y.Email.Equals(request.Email)
                         && y.Surname.Equals(request.Surname)
@@ -53,20 +53,20 @@ internal class HostControllerTests
     }
 
     [Test]
-    public async Task RegisterNewHost_GivenInvalidData_ReturnsError()
+    public async Task SignUpNewHost_GivenInvalidData_ReturnsError()
     {
-        var request = new RegisterNewHostRequest
+        var request = new SignUpNewHostRequest
         {
             Email = "",
             FirstName = "",
             Surname = "",
         };
 
-        var response = await SendApiRequest("/Host/RegisterNewHost", request);
+        var response = await SendApiRequest("/Host/SignUp", request);
 
         Assert.IsFalse(response.IsSuccessStatusCode);
 
-        _mockCommandHandler.Verify(x => x.Dispatch(It.IsAny<RegisterNewHostCommand>()), Times.Never);
+        _mockCommandHandler.Verify(x => x.Dispatch(It.IsAny<SignUpNewHostCommand>()), Times.Never);
     }
 
     private async Task<HttpResponseMessage> SendApiRequest(string url, object messageBody)

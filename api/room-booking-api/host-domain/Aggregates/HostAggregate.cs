@@ -6,17 +6,17 @@ namespace host_domain.Aggregates;
 
 public class HostAggregate : Aggregate
 {
-    private bool _alreadyCreated = false;
+    private bool _alreadySignedUp = false;
 
     public HostAggregate(string id, IEventRepository eventRepository, IEventDispatcher eventDispatcher) : base(id, eventRepository, eventDispatcher)
     {
     }
     
-    public void RegisterNewHost(string email, string firstName, string surname)
+    public void SignUp(string email, string firstName, string surname)
     {
-        if (!_alreadyCreated)
+        if (!_alreadySignedUp)
         {
-            Raise(new HostRegisteredEvent
+            Raise(new HostSignedUpEvent
             {
                 Email = email,
                 FirstName = firstName,
@@ -25,8 +25,8 @@ public class HostAggregate : Aggregate
         }
     }
 
-    private void Apply(HostRegisteredEvent @event)
+    private void Apply(HostSignedUpEvent @event)
     {
-        _alreadyCreated = true;
+        _alreadySignedUp = true;
     }
 }

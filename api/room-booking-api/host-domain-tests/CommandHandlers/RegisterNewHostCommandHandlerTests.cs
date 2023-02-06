@@ -37,7 +37,7 @@ public class RegisterNewHostCommandHandlerTests
     [Test]
     public void GivenCommand_CallsAggregateWithRightId()
     {
-        var command = new RegisterNewHostCommand
+        var command = new SignUpNewHostCommand
         {
             FirstName = "TestName",
             Email = "TestEmail",

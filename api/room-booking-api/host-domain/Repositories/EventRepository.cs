@@ -27,7 +27,7 @@ public class EventRepository : IEventRepository
             BsonClassMap.RegisterClassMap<EventWrapper>();
             BsonClassMap.RegisterClassMap<Event>();
             BsonClassMap.RegisterClassMap<RoomRegisteredEvent>();
-            BsonClassMap.RegisterClassMap<HostRegisteredEvent>();
+            BsonClassMap.RegisterClassMap<HostSignedUpEvent>();
         }
         catch {}
     }

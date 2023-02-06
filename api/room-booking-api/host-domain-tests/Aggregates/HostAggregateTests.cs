@@ -29,7 +29,7 @@ public class HostAggregateTests
     [Test]
     public void GivenHostNotAlreadyCreated_RaisesEvent()
     {
-        var expectedEventRaised = new HostRegisteredEvent
+        var expectedEventRaised = new HostSignedUpEvent
         {
             Email = "email@testing.invalid",
             FirstName = "TestFirstName",
@@ -41,11 +41,11 @@ public class HostAggregateTests
         
         _sut = new HostAggregate(aggregateGuid.ToString(), _mockEventRepository.Object, _mockEventDispatcher.Object);
 
-        _sut.RegisterNewHost(expectedEventRaised.Email, expectedEventRaised.FirstName, expectedEventRaised.Surname);
+        _sut.SignUp(expectedEventRaised.Email, expectedEventRaised.FirstName, expectedEventRaised.Surname);
 
         _mockEventRepository
             .Verify(x =>
-                x.SaveEvent(It.Is<HostRegisteredEvent>(y =>
+                x.SaveEvent(It.Is<HostSignedUpEvent>(y =>
                     y.Email.Equals(expectedEventRaised.Email)
                     && y.FirstName.Equals(expectedEventRaised.FirstName)
                     && y.Surname.Equals(expectedEventRaised.Surname)
@@ -56,7 +56,7 @@ public class HostAggregateTests
     [Test]
     public void GivenHostAlreadyCreated_DoesNotRaisesEvent()
     {
-        var registeredEvent = new HostRegisteredEvent
+        var registeredEvent = new HostSignedUpEvent
         {
             Email = "email@testing.invalid",
             FirstName = "TestFirstName",
@@ -65,10 +65,10 @@ public class HostAggregateTests
 
         _sut.ApplyEventAgainstAggregate(registeredEvent);
 
-        _sut.RegisterNewHost(registeredEvent.Email, registeredEvent.FirstName, registeredEvent.Surname);
+        _sut.SignUp(registeredEvent.Email, registeredEvent.FirstName, registeredEvent.Surname);
 
         _mockEventRepository
             .Verify(x =>
-                x.SaveEvent(It.IsAny<HostRegisteredEvent>()), Times.Never);
+                x.SaveEvent(It.IsAny<HostSignedUpEvent>()), Times.Never);
     }
 }
