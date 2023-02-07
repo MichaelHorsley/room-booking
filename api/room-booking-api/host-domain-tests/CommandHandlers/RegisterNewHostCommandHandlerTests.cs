@@ -15,7 +15,7 @@ namespace host_domain_tests.CommandHandlers;
 [TestFixture]
 public class RegisterNewHostCommandHandlerTests
 {
-    private RegisterNewHostCommandHandler _sut;
+    private SignUpNewHostCommandHandler _sut;
     private Mock<IAggregateService> _mockAggregateService;
     private Mock<IEventRepository> _mockEventRepository;
     private Mock<IEventDispatcher> _mockEventDispatcher;
@@ -31,7 +31,7 @@ public class RegisterNewHostCommandHandlerTests
             .Setup(x => x.Get<HostAggregate>(It.IsAny<string>()))
             .Returns(new HostAggregate("", _mockEventRepository.Object, _mockEventDispatcher.Object));
 
-        _sut = new RegisterNewHostCommandHandler(new Mock<ILogger>().Object, _mockAggregateService.Object);
+        _sut = new SignUpNewHostCommandHandler(new Mock<ILogger>().Object, _mockAggregateService.Object);
     }
 
     [Test]

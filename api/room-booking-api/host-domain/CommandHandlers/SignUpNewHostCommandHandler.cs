@@ -6,12 +6,12 @@ using host_domain.Aggregates;
 
 namespace host_domain.CommandHandlers;
 
-public class RegisterNewHostCommandHandler : IHandleCommand<SignUpNewHostCommand>
+public class SignUpNewHostCommandHandler : IHandleCommand<SignUpNewHostCommand>
 {
     private readonly ILogger _logger;
     private readonly IAggregateService _aggregateService;
 
-    public RegisterNewHostCommandHandler(ILogger logger, IAggregateService aggregateService)
+    public SignUpNewHostCommandHandler(ILogger logger, IAggregateService aggregateService)
     {
         _logger = logger;
         _aggregateService = aggregateService;
