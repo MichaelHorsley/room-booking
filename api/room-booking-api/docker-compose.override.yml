@@ -11,6 +11,31 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  admin-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - Serilog__WriteTo__1__Args__serverUrl=http://logs
+      - ConnectionStrings__RabbitMq=rabbitmq
+      - ConnectionStrings__MongoDb=mongodb://mongodb
+    ports:
+        - "80"
+        - "443"
+  admin-acl:
+    environment:
+      - ConnectionStrings__RabbitMq=rabbitmq
+      - ConnectionStrings__MongoDb=mongodb://mongodb
+      - Serilog__WriteTo__1__Args__serverUrl=http://logs
+  admin-domain:
+    environment:
+      - ConnectionStrings__RabbitMq=rabbitmq
+      - ConnectionStrings__MongoDb=mongodb://mongodb
+      - Serilog__WriteTo__1__Args__serverUrl=http://logs
+  admin-projections:
+    environment:
+      - ConnectionStrings__RabbitMq=rabbitmq
+      - ConnectionStrings__MongoDb=mongodb://mongodb
+      - Serilog__WriteTo__1__Args__serverUrl=http://logs
   host-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
