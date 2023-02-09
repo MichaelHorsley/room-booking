@@ -1,6 +1,4 @@
-﻿using events;
-
-namespace host_projections;
+﻿namespace events;
 
 public interface IHandleEvent<T> where T : Event
 {

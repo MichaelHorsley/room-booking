@@ -25,6 +25,18 @@ services:
       - "logs"
       - "rabbitmq"
       - "mongodb"
+  admin-api:
+    image: ${DOCKER_REGISTRY-}adminapi
+    build:
+      context: .
+      dockerfile: admin-api/Dockerfile
+    ports:
+        - "9011:80"
+        - "9012:443"
+    depends_on:
+      - "logs"
+      - "rabbitmq"
+      - "mongodb"
   admin-acl:
     image: ${DOCKER_REGISTRY-}adminacl
     build:
