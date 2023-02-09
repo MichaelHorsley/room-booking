@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "admin-domain", "admin-domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "admin-projections", "admin-projections\admin-projections.csproj", "{4E5138C5-3D3F-419B-B958-6B4B72FB86D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "admin-acl", "admin-acl\admin-acl.csproj", "{3D70D484-ACD8-481C-8424-9DF27EC027C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "admin-acl", "admin-acl\admin-acl.csproj", "{3D70D484-ACD8-481C-8424-9DF27EC027C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "guest", "guest", "{3B219D15-1D16-49F7-8E9E-BB195EEEC325}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -120,6 +122,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{64774236-A969-4F24-958B-4E29C9D8A60D} = {3B219D15-1D16-49F7-8E9E-BB195EEEC325}
 		{183F4CB2-14F2-40DA-BEBF-C8EA1BDBCB4D} = {7EFFE53D-71D5-4B12-9532-43CF57ECF34D}
 		{F8BB2474-D1DC-40FC-8B3A-3A1354A887FA} = {0B534E88-25A1-41BA-8D9D-4F5F037B205A}
 		{EB11A3E7-1948-4FAD-BC87-CC89D2AAE143} = {7EFFE53D-71D5-4B12-9532-43CF57ECF34D}
