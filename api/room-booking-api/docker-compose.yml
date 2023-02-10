@@ -31,8 +31,8 @@ services:
       context: .
       dockerfile: admin-api/Dockerfile
     ports:
-        - "9011:80"
-        - "9012:443"
+        - "9013:80"
+        - "9014:443"
     depends_on:
       - "logs"
       - "rabbitmq"
